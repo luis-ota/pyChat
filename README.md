@@ -2,7 +2,11 @@
 
 [In English](README.md) | [Em Português](README_PTBR.md)
 
----
+## Imagem de Exemplo
+
+![Logo do Projeto](entrar.png)
+![Logo do Projeto](chat.png)
+
 
 ## Overview
 

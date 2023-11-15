@@ -4,7 +4,8 @@ In [English](README.md) | Em [Português](README_PTBR.md)
 
 ## Imagem de Exemplo
 
-![img](entrar.png) ![img](chat.png)
+| ![img](entrar.png) |  ![img](chat.png) |
+| ------------------ | ------------------|
 
 ##
 

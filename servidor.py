@@ -4,6 +4,7 @@ import threading as th
 conexoes = {}
 usuarios = []
 
+
 def obter_ip_local():
     try:
         # Obtém o nome do host
@@ -15,9 +16,10 @@ def obter_ip_local():
     except Exception as e:
         print(f"Erro ao obter o endereço IP: {str(e)}")
 
+
 def server():
     global sock, conn, ender, conexoes, usuarios
-    HOST = obter_ip_local() #str(input('digite o ip da maquina que sera o servidor: '))  # 127.0.0.1
+    HOST = obter_ip_local()  # str(input('digite o ip da maquina que sera o servidor: '))  # 127.0.0.1
     PORT = 9999
 
     # inicializar o socket com os seus parametros basicos (IPV4 e TCP)
@@ -41,43 +43,69 @@ def server():
     # ender é o endereço da porta
     while True:
         conn, ender = sock.accept()
-        while True:
-            dados = conn.recv(1024).decode()
+        while conn:
+            try:
+                dados = conn.recv(1024).decode()
+            except:
+                break
+
             if dados:
                 usuario = dados.split('§')[1::2][0]
                 if usuario:
                     conexoes[usuario] = conn
                     usuarios.append(usuario)
-                    exec(f'{usuario} = th.Thread(target=conexao, args=("{usuario}",))')
+                    exec(f'{usuario} = th.Thread(target=conexao, args=("{usuario}",), name="{usuario}")')
                     exec(f'{usuario}.start()')
-
+                del conn
                 sock.listen()
                 break
 
 
-
 def conexao(usuario):
     global conexoes, sock, conn, ender, usuarios
-    print(f'Conectado em: {ender} para o usuario: {usuario}')
-    broadcast(usuario, f'{usuario} entrou no chat')
+    print(f'servidor: Conectado em: {ender} para o usuario: {usuario}')
+    broadcast(usuario, f'{usuario} entrou no chat', False)
     while True:
-        dados = conexoes[usuario].recv(1024).decode()  # bytes de dados
+        try:
+            dados = conexoes[usuario].recv(1024).decode()  # bytes de dados
+        except:
+            print(f'servidor: finalizando thread do usuario {usuario}')
+            try:
+                conexoes.pop(usuario)
+            except:
+                pass
+            break
         toUser = dados.split('§')[1]
         mensagem = dados.split('£')[1]
+        try:
+            saindo = dados.split('*')[1]
+        except:
+            saindo = False
+
         if toUser in conexoes:
             conexoes[toUser].sendall(str.encode(f'${usuario}$: £{mensagem}£'))
             print(toUser)
         elif toUser == 'geral':
-            broadcast(usuario, mensagem)
+            broadcast(usuario, mensagem, saindo)
 
 
-def broadcast(usr, msg):
+def broadcast(usr, msg, saindo):
     global conexoes, sock, conn, ender, usuarios
-    for usuario in conexoes:
-        if usr != usuario:
-            conexoes[usuario].sendall(str.encode(f'$¢{usr}¢ no geral$: £{msg}£'))
+    if not saindo:
+        for usuario in conexoes:
+            if usr != usuario:
+                conexoes[usuario].sendall(str.encode(f'$¢{usr}¢ no geral$: £{msg}£'))
         print(f'{usr} no geral: {msg}')
+    else:
+        try:
+            conexoes.pop(usr)
+        except:
+            pass
+        for usuario in conexoes:
+            if usr != usuario:
+                conexoes[usuario].sendall(str.encode(f'$¢{usr}¢ no geral$: £{msg}£'))
+        print(f'{usr} no geral: {msg}')
+
 
 if __name__ == '__main__':
     server()
-

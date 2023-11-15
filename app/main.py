@@ -1,3 +1,4 @@
+import sys
 from customtkinter import *
 import socket
 import threading as th
@@ -6,12 +7,25 @@ from datetime import datetime
 
 
 
+
 def ChatApp():
-    global sock, dados
+    global dados
 
     janela = CTk()
 
+
+
     class App():
+        def obter_ip_local(self):
+            try:
+                host_name = socket.gethostname()
+
+                # Obtém o endereço IP associado ao nome do host
+                ip_address = socket.gethostbyname(host_name)
+                return ip_address.rsplit('.', 1)[0]
+            except Exception as e:
+                print(f"Erro ao obter o endereço IP: {str(e)}")
+
         def __init__(self):
             self.janela = janela
             self.tela()
@@ -19,6 +33,7 @@ def ChatApp():
             self.jaExibindo = []
             self.usuariosConectados = []
             self.usuario = []
+            self.recon = False
             janela.mainloop()
 
         def tela(self):
@@ -27,11 +42,16 @@ def ChatApp():
             self.janela.geometry('900x600')
             self.janela.resizable(True, True)
             self.janela.minsize(width=800, height=500)
+            self.janela.protocol("WM_DELETE_WINDOW", self.encerrar)
             self.top = .03
             self.heigh = .94
             self.numBalao = 0
             self.font = ("Sans-serif", 21)
 
+        def encerrar(self):
+            self.janela.destroy()
+            self.sock.sendall(str.encode(f'*saindo* §geral§: £{self.usuario[0]} saiu do chat£'))
+            sys.exit()
         def exibirChat(self, subir):
             if self.chatUnderAtual == subir:
                 pass
@@ -59,7 +79,15 @@ def ChatApp():
 
         def recebendo(self):
             while True:
-                dados = sock.recv(1024).decode()
+                if self.recon:
+                    break
+                try:
+                    dados = self.sock.recv(1024).decode()
+                except:
+                    recebendo = th.Thread(target=self.recebendo)
+                    recebendo.start()
+                    break
+
                 if dados:
                     try:
                         """if dados.split('§')[1] == 'usrList':
@@ -157,8 +185,6 @@ def ChatApp():
 
             if entrando:
                 mensagem = f'{self.usuario[0]} entrou do chat'
-                if mensagem == '/q' or mensagem == '/Q':
-                    mensagem = f'{self.usuario[0]} saiu do chat'
                 if self.chatUnderAtual == self.chatGeralUnderFrame and len(mensagem) > 0:
 
                     user_label = CTkLabel(self.chatGeralUpFrame, text=f'{self.usuario[0]} - {hora}',
@@ -199,7 +225,14 @@ def ChatApp():
                     else:
                         desligar = False
                     if self.chatUnderAtual == self.chatGeralUnderFrame and len(mensagem) > 0:
-                        sock.sendall(str.encode(f'§geral§: £{mensagem}£'))
+                        if desligar:
+                            self.sock.sendall(str.encode(f'*saindo* §geral§: £{mensagem}£'))
+                        else:
+                            try:
+                                self.sock.sendall(str.encode(f'§geral§: £{mensagem}£'))
+                            except:
+                                self.recon = True
+                                self.inputServidor(recon=self.recon)
 
                         user_label = CTkLabel(self.chatGeralUpFrame, text=f'{self.usuario[0]} - {hora}', font=("Sans-serif", 14))
                         user_label.pack(side="top", anchor="ne")
@@ -215,7 +248,7 @@ def ChatApp():
 
                     if desligar:
                         self.janela.destroy()
-                        exit(0)
+                        sys.exit()
 
         def InputUsuario(self):
             recebendo = th.Thread(target=self.recebendo)
@@ -239,7 +272,7 @@ def ChatApp():
                     bemvindo = CTkLabel(self.chatGeralUpFrame, text=f'bem vindo, {nomeUsuario.get()}', font=self.font)
                     bemvindo.pack(expand=True, anchor="s", pady=5)
                     self.janela.title(f'chat: {self.usuario[0]}')
-                    sock.sendall(str.encode(f'usuario: §{nomeUsuario.get()}§'))
+                    self.sock.sendall(str.encode(f'usuario: §{nomeUsuario.get()}§'))
                     self.balaoMensagem(entrando=True)
                     input.destroy()
                 else:
@@ -289,9 +322,10 @@ def ChatApp():
                               relwidth=.5,
                               relheight=.2)
 
-        def inputServidor(self):
+        def inputServidor(self, recon=False):
             def Client(a=None):
-                global sock
+                self.conectar.configure(text='Tentando conectar...')
+                self.conectar.update()
                 try:
                     self.ipInvalido.destroy()
                 except:
@@ -302,15 +336,22 @@ def ChatApp():
                     PORT = 9999
 
                     # quero me conectar em 127.0.0.1:9999
-                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
                     # como a conexão é tcp precisamos de um conect
-                    sock.connect((HOST, PORT))  # acende o accep do servidor
+                    self.sock.connect((HOST, PORT))  # acende o accep do servidor
+                    self.conectar.configure(text='Conectado com sucesso')
                     inputServidor.destroy()
-                    self.InputUsuario()
+                    if not recon:
+                        self.InputUsuario()
+                    else:
+
+                        self.sock.sendall(str.encode(f'usuario: §{self.usuario[0]}§'))
 
                 except:
-                    self.ipInvalido = CTkLabel(centro, text='*Nenhum servidor encontrado para o IP fornecido, tente novamente', font=("Sans-serif", 16),
+                    self.conectar.configure(text='Conectar')
+                    self.ipInvalido = CTkLabel(centro, text='*Nenhum servidor encontrado para o IP fornecido, tente '
+                                                            'novamente', font=("Sans-serif", 16),
                                                  text_color='red', fg_color='transparent', anchor="w")
                     self.ipInvalido.place(relx=0,
                                             rely=.57,
@@ -332,7 +373,9 @@ def ChatApp():
                          relwidth=.52,
                          relheight=.37)
 
-            label = CTkLabel(centro, text='Digite o IP do servidor', font=self.font)
+            label = CTkLabel(centro, text='Complete ou digite o IP do servidor', font=self.font)
+            if recon:
+                label.configure(text='O servidor caiu, digite o IP novamente')
 
             label.place(relx=0,
                         rely=.2,
@@ -340,6 +383,7 @@ def ChatApp():
                         relheight=.1)
 
             ipServidor = CTkEntry(centro, font=self.font)
+            ipServidor.insert(0, f"{self.obter_ip_local()}.")
 
             ipServidor.bind("<Return>", Client)
 
@@ -355,19 +399,6 @@ def ChatApp():
                               relheight=.2)
 
     App()
-
-
-
-def Client():
-    global sock
-    HOST = "127.0.0.2" # str(input('digite o ip do servidor: '))
-    PORT = 9999
-
-    # quero me conectar em 127.0.0.1:9999
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # como a conexão é tcp precisamos de um conect
-    sock.connect((HOST, PORT))  # acende o accep do servidor
 
 
 if __name__ == '__main__':

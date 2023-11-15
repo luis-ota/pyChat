@@ -15,9 +15,7 @@ def ChatApp():
         def __init__(self):
             self.janela = janela
             self.tela()
-            self.frameLateral()
-            self.frameMain()
-            self.InputUsuario()
+            self.inputServidor()
             self.jaExibindo = []
             self.usuariosConectados = []
             self.usuario = []
@@ -289,13 +287,76 @@ def ChatApp():
                               relwidth=.5,
                               relheight=.2)
 
+        def inputServidor(self):
+            def Client(a=None):
+                global sock
+
+                try:
+                    HOST = ipServidor.get()  # str(input('digite o ip do servidor: '))
+                    PORT = 9999
+
+                    # quero me conectar em 127.0.0.1:9999
+                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+                    # como a conexão é tcp precisamos de um conect
+                    sock.connect((HOST, PORT))  # acende o accep do servidor
+                    inputServidor.destroy()
+                    self.frameLateral()
+                    self.frameMain()
+                    self.InputUsuario()
+
+                except:
+                    self.ipInvalido = CTkLabel(centro, text='*IP invalido, tente novamente', font=("Sans-serif", 16),
+                                                 text_color='red', fg_color='transparent', anchor="w")
+                    self.ipInvalido.place(relx=0,
+                                            rely=.57,
+                                            relwidth=1,
+                                            relheight=.1)
+
+
+
+            inputServidor = CTkFrame(self.janela)
+
+            inputServidor.place(relx=0,
+                        rely=0,
+                        relwidth=1,
+                        relheight=1)
+
+            centro = CTkFrame(inputServidor, fg_color="transparent")
+            centro.place(relx=.24,
+                         rely=.3,
+                         relwidth=.52,
+                         relheight=.37)
+
+            label = CTkLabel(centro, text='Digite o IP do servidor', font=self.font)
+
+            label.place(relx=0,
+                        rely=.2,
+                        relwidth=1,
+                        relheight=.1)
+
+            ipServidor = CTkEntry(centro, font=self.font)
+
+            ipServidor.bind("<Return>", Client)
+
+            ipServidor.place(relx=0,
+                              rely=.37,
+                              relwidth=1,
+                              relheight=.2)
+
+            self.conectar = CTkButton(centro, text='Conectar', command=Client, font=self.font)
+            self.conectar.place(relx=.25,
+                              rely=.7,
+                              relwidth=.5,
+                              relheight=.2)
+
     App()
 
 
 
 def Client():
     global sock
-    HOST = "127.0.0.1" # str(input('digite o ip do servidor: '))
+    HOST = "127.0.0.2" # str(input('digite o ip do servidor: '))
     PORT = 9999
 
     # quero me conectar em 127.0.0.1:9999
@@ -306,5 +367,4 @@ def Client():
 
 
 if __name__ == '__main__':
-    Client()
     ChatApp()

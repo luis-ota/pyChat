@@ -4,10 +4,20 @@ import threading as th
 conexoes = {}
 usuarios = []
 
+def obter_ip_local():
+    try:
+        # Obtém o nome do host
+        host_name = s.gethostname()
+
+        # Obtém o endereço IP associado ao nome do host
+        ip_address = s.gethostbyname(host_name)
+        return ip_address
+    except Exception as e:
+        print(f"Erro ao obter o endereço IP: {str(e)}")
 
 def server():
     global sock, conn, ender, conexoes, usuarios
-    HOST = 'localhost'#str(input('digite o ip da maquina que sera o servidor: '))  # 127.0.0.1
+    HOST = obter_ip_local() #str(input('digite o ip da maquina que sera o servidor: '))  # 127.0.0.1
     PORT = 9999
 
     # inicializar o socket com os seus parametros basicos (IPV4 e TCP)

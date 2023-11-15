@@ -234,6 +234,8 @@ def ChatApp():
 
                 if nomeUsuario.get() and not invalido and nomeUsuario.get() not in self.usuariosConectados and len(nomeUsuario.get())<10:
                     self.usuario.append(nomeUsuario.get())
+                    self.frameLateral()
+                    self.frameMain()
                     bemvindo = CTkLabel(self.chatGeralUpFrame, text=f'bem vindo, {nomeUsuario.get()}', font=self.font)
                     bemvindo.pack(expand=True, anchor="s", pady=5)
                     self.janela.title(f'chat: {self.usuario[0]}')
@@ -290,6 +292,10 @@ def ChatApp():
         def inputServidor(self):
             def Client(a=None):
                 global sock
+                try:
+                    self.ipInvalido.destroy()
+                except:
+                    pass
 
                 try:
                     HOST = ipServidor.get()  # str(input('digite o ip do servidor: '))
@@ -301,12 +307,10 @@ def ChatApp():
                     # como a conexão é tcp precisamos de um conect
                     sock.connect((HOST, PORT))  # acende o accep do servidor
                     inputServidor.destroy()
-                    self.frameLateral()
-                    self.frameMain()
                     self.InputUsuario()
 
                 except:
-                    self.ipInvalido = CTkLabel(centro, text='*IP invalido, tente novamente', font=("Sans-serif", 16),
+                    self.ipInvalido = CTkLabel(centro, text='*Nenhum servidor encontrado para o IP fornecido, tente novamente', font=("Sans-serif", 16),
                                                  text_color='red', fg_color='transparent', anchor="w")
                     self.ipInvalido.place(relx=0,
                                             rely=.57,

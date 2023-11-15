@@ -4,9 +4,7 @@
 
 ## Example Image
 
-![Logo do Projeto](entrar.png)
-![Logo do Projeto](chat.png)
-
+![img](entrar.png) ![img](chat.png)
 
 ## Overview
 

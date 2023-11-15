@@ -1,15 +1,19 @@
 # pyChat - Chat with Interface using Socket
 
-[In English](README.md) | [Em Português](README_PTBR.md)
+In [English](README.md) | Em [Português](README_PTBR.md)
 
 ## Example Image
 
 | ![img](img/entrar.png) | ![img](img/chat.png) |
-| ---------------------- | -------------------- |
+|------------------------|----------------------|
+
+##
+
+This is a client-server chat project with a graphical interface, enabling communication between multiple computers using Python sockets.
 
 ## Overview
 
-This is a client-server chat project with a graphical interface, enabling communication between multiple computers using sockets in Python.
+This project consists of two main parts: the server and the client. The server manages connections between clients and forwards messages, while the client provides a graphical interface for users to participate in the chat.
 
 ## Features
 
@@ -20,8 +24,8 @@ This is a client-server chat project with a graphical interface, enabling commun
 
 - **Client:**
   - User-friendly graphical interface.
-  - Sending messages to all participants.
-  - Sending private messages to specific users.
+  - Sends messages to all participants.
+  - Sends private messages to specific users.
 
 ## Requirements
 
@@ -40,16 +44,12 @@ This is a client-server chat project with a graphical interface, enabling commun
    ```
 
 2. **Server Configuration:**
-   - In `servidor.py`, specify the IP of the machine that will be the server.
-   - Disable the server firewall to allow connections.
+   - Disable the firewall on the server PC to allow connections.
 
-3. **Client Configuration:**
-   - Put the server's IP in the client's code.
+3. **Start the Server:**
+   - Run the `servidor.py` script.
 
-4. **Start the Server:**
-   - Execute the `servidor.py` script.
+4. **Start the Clients:**
+   - Run the `app/main.py` script on each machine that wants to participate in the chat, or run it twice on the same machine to test.
 
-5. **Start the Clients:**
-   - Execute the `app/main.py` script on each machine that wants to participate in the chat.
-
-Now, with the server and clients running, users can communicate with each other through the chat. Ensure that all machines are on the same network to ensure proper communication.
+Now, with the server and clients running, users can communicate with each other through the chat. Make sure all machines are on the same network to ensure proper communication.

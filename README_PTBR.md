@@ -5,7 +5,7 @@ In [English](README.md) | Em [Português](README_PTBR.md)
 ## Imagem de Exemplo
 
 | ![img](img/entrar.png) | ![img](img/chat.png) |
-| ---------------------- | -------------------- |
+|------------------------|----------------------|
 
 ##
 
@@ -45,17 +45,13 @@ Este projeto consiste em duas partes principais: o servidor e o cliente. O servi
    ```
 
 2. **Configuração do Servidor:**
-   - No  `servidor.py`, especifique o IP da máquina que será o servidor.
-   - Desative o firewall do servidor para permitir conexões.
+   - Desative o firewall do PC servidor para permitir conexões.
 
-3. **Configuração do Cliente:**
-   - Coloque o IP do servidor no código do cliente.
-
-4. **Inicie o Servidor:**
+3. **Inicie o Servidor:**
    - Execute o script `servidor.py`.
 
-5. **Inicie os Clientes:**
-   - Execute o script `app/main.py` em cada máquina que deseja participar do chat.
+4. **Inicie os Clientes:**
+   - Execute o script `app/main.py` em cada máquina que deseja participar do chat, ou execute 2 vezes na mesma maquina para testar
 
 Agora, com o servidor e os clientes em execução, os usuários podem se comunicar entre si através do chat. Certifique-se de que todas as máquinas estejam na mesma rede para garantir a comunicação adequada.
   

@@ -1,44 +1,52 @@
-# pyChat - Chat com Interface usando Socket
+# pyChat - Chat with Interface using Socket
 
-Este é um projeto de chat cliente-servidor com interface gráfica, permitindo a comunicação entre vários computadores usando sockets em Python.
+[In English](README.md) | [Em Português](README_PTBR.md)
 
-## Conteúdo
+---
 
-1. [Visão Geral](#visão-geral)
-2. [Funcionalidades](#funcionalidades)
-3. [Requisitos](#requisitos)
-4. [Configuração](#configuração)
-5. [Execução](#execução)
-6. [Contribuições](#contribuições)
-7. [Licença](#licença)
+## Overview
 
-## Visão Geral
+This is a client-server chat project with a graphical interface, enabling communication between multiple computers using sockets in Python.
 
-Este projeto consiste em duas partes principais: o servidor e o cliente. O servidor gerencia conexões entre clientes e encaminha mensagens, enquanto o cliente fornece uma interface gráfica para os usuários participarem do chat.
+## Features
 
-## Funcionalidades
+- **Server:**
+  - Manages client connections.
+  - Forwards messages between clients.
+  - Allows private communication between users.
 
-- **Servidor:**
-  - Gerencia conexões de clientes.
-  - Encaminha mensagens entre clientes.
-  - Permite comunicação privada entre usuários.
+- **Client:**
+  - User-friendly graphical interface.
+  - Sending messages to all participants.
+  - Sending private messages to specific users.
 
-- **Cliente:**
-  - Interface gráfica amigável.
-  - Envio de mensagens para todos os participantes.
-  - Envio de mensagens privadas para usuários específicos.
+## Requirements
 
-## Requisitos
-
-- **Servidor e Cliente:**
+- **Server and Client:**
   - Python 3.x
 
-- **Cliente:**
-  - Biblioteca `customtkinter` (instalável via `pip install customtkinter`)
+- **Client:**
+  - `customtkinter` library (installable via `pip install customtkinter`)
 
-## Configuração
+## How to Use
 
-1. Clone o repositório:
+1. **Clone the repository:**
 
    ```bash
    git clone https://github.com/luis-ota/pyChat.git
+   ```
+
+2. **Server Configuration:**
+   - In `servidor.py`, specify the IP of the machine that will be the server.
+   - Disable the server firewall to allow connections.
+
+3. **Client Configuration:**
+   - Put the server's IP in the client's code.
+
+4. **Start the Server:**
+   - Execute the `servidor.py` script.
+
+5. **Start the Clients:**
+   - Execute the `app/main.py` script on each machine that wants to participate in the chat.
+
+Now, with the server and clients running, users can communicate with each other through the chat. Ensure that all machines are on the same network to ensure proper communication.

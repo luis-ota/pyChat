@@ -3,8 +3,8 @@
 [In English](README.md) | [Em Português](README_PTBR.md)
 
 ## Example Image
-
-![img](entrar.png) ![img](chat.png)
+| ![img](entrar.png) |  ![img](chat.png) |
+| ------------------ | ------------------|
 
 ## Overview
 

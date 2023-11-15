@@ -52,6 +52,7 @@ def ChatApp():
             self.janela.destroy()
             self.sock.sendall(str.encode(f'*saindo* §geral§: £{self.usuario[0]} saiu do chat£'))
             sys.exit()
+
         def exibirChat(self, subir):
             if self.chatUnderAtual == subir:
                 pass
@@ -80,7 +81,8 @@ def ChatApp():
         def recebendo(self):
             while True:
                 if self.recon:
-                    break
+                    self.recon = False
+                    continue
                 try:
                     dados = self.sock.recv(1024).decode()
                 except:
@@ -345,7 +347,7 @@ def ChatApp():
                     if not recon:
                         self.InputUsuario()
                     else:
-
+                        print(f'usuario: §{self.usuario[0]}§')
                         self.sock.sendall(str.encode(f'usuario: §{self.usuario[0]}§'))
 
                 except:

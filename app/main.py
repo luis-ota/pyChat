@@ -199,7 +199,6 @@ def ChatApp():
                     boxMensagem.configure(state='normal')
                     boxMensagem.insert('end', mensagem)
                     boxMensagem.configure(state='disabled')
-                    self.inputMensagem.delete(0, 'end')
                     self.numBalao += 1
             else:
                 if fromUsr in self.usuariosConectados:
@@ -215,7 +214,6 @@ def ChatApp():
                         boxMensagem.configure(state='normal')
                         boxMensagem.insert('end', mensagem)
                         boxMensagem.configure(state='disabled')
-                        self.inputMensagem.delete(0, 'end')
                         self.numBalao += 1
                     else:
                         print(mensagem)

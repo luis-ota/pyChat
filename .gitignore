@@ -1,3 +1,6 @@
 .idea
 chat
 .testes.py
+./.testes.py
+./.idea
+./chat

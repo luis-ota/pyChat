@@ -1,0 +1,1 @@
+caso queira testar rode os apps na pasta aplicativos.txt

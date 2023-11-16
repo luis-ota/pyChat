@@ -1,0 +1,1 @@
+rode o main.exe caso nao queira instalar as libs necessarias

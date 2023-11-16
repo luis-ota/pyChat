@@ -48,10 +48,10 @@ Este projeto consiste em duas partes principais: o servidor e o cliente. O servi
    - Desative o firewall do PC servidor para permitir conexões.
 
 3. **Inicie o Servidor:**
-   - Execute o script `servidor.py`.
+   - Execute o script `servidor.py` ou o app `aplicativos/servidor.exe`.
 
 4. **Inicie os Clientes:**
-   - Execute o script `app/main.py` em cada máquina que deseja participar do chat, ou execute 2 vezes na mesma maquina para testar
+   - Execute o script `app/main.py` ou o app `aplicativos/chat.exe` em cada máquina que deseja participar do chat, ou execute 2 vezes na mesma maquina para testar
 
 Agora, com o servidor e os clientes em execução, os usuários podem se comunicar entre si através do chat. Certifique-se de que todas as máquinas estejam na mesma rede para garantir a comunicação adequada.
   

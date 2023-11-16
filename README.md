@@ -47,9 +47,9 @@ This project consists of two main parts: the server and the client. The server m
    - Disable the firewall on the server PC to allow connections.
 
 3. **Start the Server:**
-   - Run the `servidor.py` script.
+   - Run the `servidor.py` script or `aplicativos/servidor.exe`.
 
 4. **Start the Clients:**
-   - Run the `app/main.py` script on each machine that wants to participate in the chat, or run it twice on the same machine to test.
+   - Run the `app/main.py` script or `aplicativos/chat.exe` on each machine that wants to participate in the chat, or run it twice on the same machine to test.
 
 Now, with the server and clients running, users can communicate with each other through the chat. Make sure all machines are on the same network to ensure proper communication.
